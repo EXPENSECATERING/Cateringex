@@ -1,0 +1,1643 @@
+{
+  "events": [
+    {
+      "id": "evt-oct-1",
+      "clientName": "Sobha pristine",
+      "totalAmount": 26000,
+      "broughtBy": "ME",
+      "date": "2026-10-01",
+      "notes": "birthday \u2022 dasarahalli \u2022 50 guests"
+    },
+    {
+      "id": "evt-oct-2",
+      "clientName": "priyanka",
+      "totalAmount": 28500,
+      "broughtBy": "BROTHER",
+      "date": "2026-10-02",
+      "notes": "birthday \u2022 snn eterniya \u2022 50 guests"
+    },
+    {
+      "id": "evt-oct-3",
+      "clientName": "Jaya",
+      "totalAmount": 14000,
+      "broughtBy": "BROTHER",
+      "date": "2026-10-02",
+      "notes": "Birthday \u2022 snn nagavara \u2022 30 guests"
+    },
+    {
+      "id": "evt-oct-4",
+      "clientName": "Angelin",
+      "totalAmount": 30000,
+      "broughtBy": "ME",
+      "date": "2026-10-04",
+      "notes": "birthday \u2022 prestige bulward \u2022 40 guests"
+    },
+    {
+      "id": "evt-oct-5",
+      "clientName": "KD",
+      "totalAmount": 32000,
+      "broughtBy": "BROTHER",
+      "date": "2026-10-08",
+      "notes": "birthday \u2022 bellandur \u2022 80 guests"
+    },
+    {
+      "id": "evt-oct-6",
+      "clientName": "L&T",
+      "totalAmount": 115000,
+      "broughtBy": "BROTHER",
+      "date": "2026-10-11",
+      "notes": "bhandara \u2022 L&t Sahakar nagar \u2022 800 guests"
+    },
+    {
+      "id": "evt-oct-7",
+      "clientName": "manjula (events)",
+      "totalAmount": 70000,
+      "broughtBy": "BROTHER",
+      "date": "2026-10-11",
+      "notes": "dandiya event \u2022 200 guests"
+    },
+    {
+      "id": "evt-oct-8",
+      "clientName": "Bren Selastia",
+      "totalAmount": 28625,
+      "broughtBy": "BROTHER",
+      "date": "2026-10-11",
+      "notes": "lunch \u2022 kaikonda halli \u2022 40 guests"
+    },
+    {
+      "id": "evt-oct-9",
+      "clientName": "nandu bharatcity hegdenagar corporate",
+      "totalAmount": 331500,
+      "broughtBy": "ME",
+      "date": "2026-10-15",
+      "notes": "lunch& dinner \u2022 hegde nagar \u2022 60100 guests"
+    },
+    {
+      "id": "evt-oct-10",
+      "clientName": "bhana ghai",
+      "totalAmount": 18000,
+      "broughtBy": "BROTHER",
+      "date": "2026-10-13",
+      "notes": "lunch \u2022 btm \u2022 30 guests"
+    },
+    {
+      "id": "evt-oct-11",
+      "clientName": "T.k",
+      "totalAmount": 30000,
+      "broughtBy": "BROTHER",
+      "date": "2026-10-14",
+      "notes": "Dinner \u2022 prestige tranquil \u2022 55 guests"
+    },
+    {
+      "id": "evt-oct-12",
+      "clientName": "Raj event",
+      "totalAmount": 82000,
+      "broughtBy": "ME",
+      "date": "2026-10-16",
+      "notes": "lunch"
+    },
+    {
+      "id": "evt-oct-13",
+      "clientName": "Rajita",
+      "totalAmount": 38000,
+      "broughtBy": "ME",
+      "date": "2026-10-17",
+      "notes": "dinner \u2022 Horamavu \u2022 45 guests"
+    },
+    {
+      "id": "evt-oct-14",
+      "clientName": "upendar caterers.",
+      "totalAmount": 20000,
+      "broughtBy": "ME",
+      "date": "2026-10-18",
+      "notes": ""
+    },
+    {
+      "id": "evt-oct-15",
+      "clientName": "deepank",
+      "totalAmount": 16000,
+      "broughtBy": "ME",
+      "date": "2026-10-20",
+      "notes": "house warning \u2022 Domulurur Village 36km \u2022 40 guests"
+    },
+    {
+      "id": "evt-oct-16",
+      "clientName": "raj cool evet",
+      "totalAmount": 25000,
+      "broughtBy": "ME",
+      "date": "2026-10-23",
+      "notes": "store openig \u2022 kanakpura road \u2022 100 guests"
+    },
+    {
+      "id": "evt-oct-17",
+      "clientName": "Devashree sardesai",
+      "totalAmount": 57000,
+      "broughtBy": "ME",
+      "date": "2026-10-24",
+      "notes": "birthday \u2022 kothanur \u2022 85 guests"
+    },
+    {
+      "id": "evt-oct-18",
+      "clientName": "kansha",
+      "totalAmount": 29000,
+      "broughtBy": "ME",
+      "date": "2026-10-24",
+      "notes": "birthday \u2022 nekoo homes 2 \u2022 50 guests"
+    },
+    {
+      "id": "evt-oct-19",
+      "clientName": "workdwel delhi client mg road  upendar caterers",
+      "totalAmount": 380000,
+      "broughtBy": "ME",
+      "date": "2026-10-31",
+      "notes": "corporate \u2022 mg road"
+    }
+  ],
+  "expenses": [
+    {
+      "id": "exp-oct-1",
+      "title": "Water cans",
+      "amount": 165,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-2",
+      "title": "Vegetables",
+      "amount": 90,
+      "category": "Groceries & Perishables",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-3",
+      "title": "Ice cubes",
+      "amount": 90,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-4",
+      "title": "Table",
+      "amount": 1900,
+      "category": "Packaging & Crockery",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-5",
+      "title": "porter",
+      "amount": 945,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-6",
+      "title": "Milk cookies",
+      "amount": 818,
+      "category": "Groceries & Perishables",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-7",
+      "title": "portr",
+      "amount": 1217,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-8",
+      "title": "portr",
+      "amount": 824,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-9",
+      "title": "Petrol",
+      "amount": 350,
+      "category": "Fuel & Gas",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-10",
+      "title": "ata krishna spotm",
+      "amount": 230,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-11",
+      "title": "Milk sena namak",
+      "amount": 270,
+      "category": "Groceries & Perishables",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-12",
+      "title": "Porter",
+      "amount": 330,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-13",
+      "title": "Water",
+      "amount": 1100,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-14",
+      "title": "Portrr",
+      "amount": 1000,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-15",
+      "title": "Toor daal",
+      "amount": 217,
+      "category": "Groceries & Perishables",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-16",
+      "title": "Dhaniya pudinaa",
+      "amount": 290,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-17",
+      "title": "mixture",
+      "amount": 203,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-18",
+      "title": "beaans pudina dhaniya",
+      "amount": 419,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-19",
+      "title": "curd",
+      "amount": 644,
+      "category": "Groceries & Perishables",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-20",
+      "title": "porter",
+      "amount": 130,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-21",
+      "title": "Porter",
+      "amount": 200,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-22",
+      "title": "rapido",
+      "amount": 97,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-23",
+      "title": "milk",
+      "amount": 470,
+      "category": "Groceries & Perishables",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-24",
+      "title": "Milk",
+      "amount": 288,
+      "category": "Groceries & Perishables",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-25",
+      "title": "vegetabes",
+      "amount": 770,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-26",
+      "title": "vegetables",
+      "amount": 360,
+      "category": "Groceries & Perishables",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-27",
+      "title": "Beetroot",
+      "amount": 102,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-28",
+      "title": "gondharaj lemon",
+      "amount": 229,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-29",
+      "title": "porter",
+      "amount": 600,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-30",
+      "title": "curd",
+      "amount": 500,
+      "category": "Groceries & Perishables",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-31",
+      "title": "porter",
+      "amount": 535,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-32",
+      "title": "vegetables",
+      "amount": 800,
+      "category": "Groceries & Perishables",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-33",
+      "title": "water bottles",
+      "amount": 288,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-34",
+      "title": "porter",
+      "amount": 704,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-35",
+      "title": "Vegetable",
+      "amount": 305,
+      "category": "Groceries & Perishables",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-36",
+      "title": "salad items",
+      "amount": 779,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-37",
+      "title": "porter",
+      "amount": 550,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-38",
+      "title": "milk",
+      "amount": 736,
+      "category": "Groceries & Perishables",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-39",
+      "title": "porter",
+      "amount": 550,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-40",
+      "title": "vegetable",
+      "amount": 200,
+      "category": "Groceries & Perishables",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-41",
+      "title": "Brownies",
+      "amount": 3500,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-42",
+      "title": "ziccuini",
+      "amount": 288,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-43",
+      "title": "soda",
+      "amount": 240,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-44",
+      "title": "sprite",
+      "amount": 609,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-45",
+      "title": "dhaniya pudina",
+      "amount": 130,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-46",
+      "title": "chilli and lemon",
+      "amount": 177,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-47",
+      "title": "curd",
+      "amount": 560,
+      "category": "Groceries & Perishables",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-48",
+      "title": "porter",
+      "amount": 60,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-49",
+      "title": "porter",
+      "amount": 355,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-50",
+      "title": "soda spritee",
+      "amount": 439,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-51",
+      "title": "curd",
+      "amount": 280,
+      "category": "Groceries & Perishables",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-52",
+      "title": "container",
+      "amount": 216,
+      "category": "Packaging & Crockery",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-53",
+      "title": "Parcl bos",
+      "amount": 391,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-54",
+      "title": "porter",
+      "amount": 600,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-55",
+      "title": "porter",
+      "amount": 750,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-56",
+      "title": "bulb",
+      "amount": 566,
+      "category": "Packaging & Crockery",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-57",
+      "title": "hiven to waiter",
+      "amount": 500,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-58",
+      "title": "porter",
+      "amount": 680,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-59",
+      "title": "chicken",
+      "amount": 1000,
+      "category": "Groceries & Perishables",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-60",
+      "title": "Regulator",
+      "amount": 2070,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-61",
+      "title": "three pin",
+      "amount": 180,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-62",
+      "title": "paid to baikhunta bhiaya from raj event client store opening",
+      "amount": 40000,
+      "category": "Vendor & Client Payout",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-63",
+      "title": "wisshky glass",
+      "amount": 1000,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-64",
+      "title": "Rapido",
+      "amount": 85,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-65",
+      "title": "Rapido",
+      "amount": 108,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-66",
+      "title": "cigi staff",
+      "amount": 248,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-67",
+      "title": "paid to vivike from rajita client",
+      "amount": 38000,
+      "category": "Vendor & Client Payout",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-68",
+      "title": "porter",
+      "amount": 1100,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-69",
+      "title": "ice cubes",
+      "amount": 60,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-70",
+      "title": "paid to aunty",
+      "amount": 10000,
+      "category": "Vendor & Client Payout",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-71",
+      "title": "Paid to baikhunta bhiaya from raj cool eveent client",
+      "amount": 42500,
+      "category": "Vendor & Client Payout",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-72",
+      "title": "petrol",
+      "amount": 360,
+      "category": "Fuel & Gas",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-73",
+      "title": "Vehetable",
+      "amount": 400,
+      "category": "Packaging & Crockery",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-74",
+      "title": "gujarai bhujiya",
+      "amount": 226,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-75",
+      "title": "weing machine charger",
+      "amount": 250,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-76",
+      "title": "matar",
+      "amount": 160,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-77",
+      "title": "vegetable",
+      "amount": 175,
+      "category": "Groceries & Perishables",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-78",
+      "title": "Porter",
+      "amount": 464,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-79",
+      "title": "matki",
+      "amount": 316,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-80",
+      "title": "holige advance",
+      "amount": 1000,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-81",
+      "title": "porter",
+      "amount": 554,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-82",
+      "title": "vegetabble",
+      "amount": 1650,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-83",
+      "title": "porter",
+      "amount": 673,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-84",
+      "title": "Porter",
+      "amount": 1434,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-85",
+      "title": "holige",
+      "amount": 2000,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-86",
+      "title": "Porter",
+      "amount": 1800,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-87",
+      "title": "Chicken",
+      "amount": 8000,
+      "category": "Groceries & Perishables",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-88",
+      "title": "Porter",
+      "amount": 553,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-89",
+      "title": "Porter",
+      "amount": 150,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-90",
+      "title": "Butter spot",
+      "amount": 310,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-91",
+      "title": "Tissue spot",
+      "amount": 230,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-92",
+      "title": "Porter",
+      "amount": 820,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-93",
+      "title": "water",
+      "amount": 165,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-94",
+      "title": "gas wala",
+      "amount": 2500,
+      "category": "Fuel & Gas",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-95",
+      "title": "milk",
+      "amount": 574,
+      "category": "Groceries & Perishables",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-96",
+      "title": "Paid to you",
+      "amount": 3000,
+      "category": "Vendor & Client Payout",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-97",
+      "title": "salt",
+      "amount": 43,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-98",
+      "title": "curd",
+      "amount": 224,
+      "category": "Groceries & Perishables",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-99",
+      "title": "porter",
+      "amount": 1688,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-100",
+      "title": "Petrol",
+      "amount": 350,
+      "category": "Fuel & Gas",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-101",
+      "title": "Sitafal",
+      "amount": 400,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-102",
+      "title": "Porter",
+      "amount": 1045,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-103",
+      "title": "chicken lollipop",
+      "amount": 1053,
+      "category": "Groceries & Perishables",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-104",
+      "title": "lillipo",
+      "amount": 600,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-105",
+      "title": "guava crush",
+      "amount": 170,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-106",
+      "title": "Palak",
+      "amount": 300,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-107",
+      "title": "gobi",
+      "amount": 100,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-108",
+      "title": "mini pizza base",
+      "amount": 800,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-109",
+      "title": "aloo piyaz",
+      "amount": 1028,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-110",
+      "title": "Soda sprite broccoli red yellow caps",
+      "amount": 885,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-111",
+      "title": "Paid to gas wala",
+      "amount": 2000,
+      "category": "Fuel & Gas",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-112",
+      "title": "Pani",
+      "amount": 400,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-113",
+      "title": "Porter",
+      "amount": 900,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-114",
+      "title": "Porter",
+      "amount": 850,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-115",
+      "title": "milk",
+      "amount": 300,
+      "category": "Groceries & Perishables",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-116",
+      "title": "oil spot",
+      "amount": 876,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-117",
+      "title": "auto",
+      "amount": 250,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-118",
+      "title": "Porter",
+      "amount": 1220,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-119",
+      "title": "Rapido",
+      "amount": 375,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-120",
+      "title": "oil curd",
+      "amount": 942,
+      "category": "Groceries & Perishables",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-121",
+      "title": "Paid to mohit from raj cool client",
+      "amount": 25000,
+      "category": "Vendor & Client Payout",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-122",
+      "title": "butter spot",
+      "amount": 249,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-123",
+      "title": "oil spot",
+      "amount": 510,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-124",
+      "title": "Paid to tempo yogesh from 24th event dinner nikoo home akansha",
+      "amount": 29000,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-125",
+      "title": "Porter",
+      "amount": 821,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-126",
+      "title": "Porter",
+      "amount": 900,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-127",
+      "title": "Porter",
+      "amount": 1400,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-128",
+      "title": "Mobile recharge",
+      "amount": 299,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-129",
+      "title": "chicken",
+      "amount": 7500,
+      "category": "Groceries & Perishables",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-130",
+      "title": "Inter nernt",
+      "amount": 470,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-131",
+      "title": "Paid for table home function",
+      "amount": 1800,
+      "category": "Packaging & Crockery",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-132",
+      "title": "Paid to mohit from 24th evet dinner devsgree cliet tch",
+      "amount": 52000,
+      "category": "Vendor & Client Payout",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-133",
+      "title": "Paint",
+      "amount": 320,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-134",
+      "title": "Paint things",
+      "amount": 140,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-135",
+      "title": "water cans",
+      "amount": 150,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-136",
+      "title": "Garbage kitchen",
+      "amount": 2500,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-137",
+      "title": "Petrol",
+      "amount": 220,
+      "category": "Fuel & Gas",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-138",
+      "title": "gas walla",
+      "amount": 2000,
+      "category": "Fuel & Gas",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-139",
+      "title": "Cigi",
+      "amount": 433,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-140",
+      "title": "Spoon ligher",
+      "amount": 547,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-141",
+      "title": "gas kit",
+      "amount": 1750,
+      "category": "Fuel & Gas",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-142",
+      "title": "Palak",
+      "amount": 170,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-143",
+      "title": "Chicken",
+      "amount": 1915,
+      "category": "Groceries & Perishables",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-144",
+      "title": "Cconut water",
+      "amount": 269,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-145",
+      "title": "Coconut water",
+      "amount": 600,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-146",
+      "title": "Ptrol",
+      "amount": 390,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-147",
+      "title": "Chana dal",
+      "amount": 500,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-148",
+      "title": "kashmmiri mirch",
+      "amount": 645,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-149",
+      "title": "Curd",
+      "amount": 1133,
+      "category": "Groceries & Perishables",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-150",
+      "title": "frieds dmmainn",
+      "amount": 648,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-151",
+      "title": "Curd",
+      "amount": 868,
+      "category": "Groceries & Perishables",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-152",
+      "title": "milk",
+      "amount": 785,
+      "category": "Groceries & Perishables",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-153",
+      "title": "Staf cigi",
+      "amount": 160,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-154",
+      "title": "bread",
+      "amount": 662,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-155",
+      "title": "Porter",
+      "amount": 738,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-156",
+      "title": "porter",
+      "amount": 48,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-157",
+      "title": "daaru",
+      "amount": 240,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-158",
+      "title": "Porter",
+      "amount": 175,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-159",
+      "title": "Porter",
+      "amount": 750,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-160",
+      "title": "Porter",
+      "amount": 987,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-161",
+      "title": "Porter",
+      "amount": 710,
+      "category": "Transport & Porter",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-162",
+      "title": "water cans",
+      "amount": 100,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-163",
+      "title": "Daaru",
+      "amount": 1110,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-164",
+      "title": "Upendar caterers event mg road take by you full",
+      "amount": 380185,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    },
+    {
+      "id": "exp-oct-165",
+      "title": "18th upendar caterers takenn by you full",
+      "amount": 20000,
+      "category": "Raw Materials & Kitchen",
+      "paidBy": "ME",
+      "eventId": "GENERAL",
+      "date": "2026-10-10"
+    }
+  ]
+}
