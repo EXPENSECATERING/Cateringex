@@ -30,7 +30,8 @@ import {
   Share,
   Menu,
   Cloud,
-  CloudOff
+  CloudOff,
+  Pencil
 } from 'lucide-react';
 import { supabase, toDBEvent, fromDBEvent, toDBExpense, fromDBExpense } from './src/supabase';
 
@@ -510,6 +511,26 @@ export default function App() {
   const [expEventId, setExpEventId] = useState('GENERAL');
   const [expDate, setExpDate] = useState(getOffsetDate(0));
 
+  // --- EDIT EXPENSE / EVENT AUDIT TRAIL STATE ---
+  const [editingExpense, setEditingExpense] = useState<any>(null);
+  const [editExpTitle, setEditExpTitle] = useState('');
+  const [editExpAmount, setEditExpAmount] = useState('');
+  const [editExpCategory, setEditExpCategory] = useState('');
+  const [editExpPaidBy, setEditExpPaidBy] = useState('ME');
+  const [editExpEventId, setEditExpEventId] = useState('GENERAL');
+  const [editExpDate, setEditExpDate] = useState(getOffsetDate(0));
+  const [editExpEditor, setEditExpEditor] = useState('Shekhar');
+  const [editExpReason, setEditExpReason] = useState('');
+
+  const [editingEvent, setEditingEvent] = useState<any>(null);
+  const [editEvtClient, setEditEvtClient] = useState('');
+  const [editEvtAmount, setEditEvtAmount] = useState('');
+  const [editEvtBroughtBy, setEditEvtBroughtBy] = useState('ME');
+  const [editEvtDate, setEditEvtDate] = useState(getOffsetDate(0));
+  const [editEvtNotes, setEditEvtNotes] = useState('');
+  const [editEvtEditor, setEditEvtEditor] = useState('Shekhar');
+  const [editEvtReason, setEditEvtReason] = useState('');
+
   // --- CLOSE MONTH FORM STATE ---
   const [closeMonthName, setCloseMonthName] = useState(activeCycleMonth.month);
   const [closeMonthYear, setCloseMonthYear] = useState(activeCycleMonth.year);
@@ -548,6 +569,8 @@ export default function App() {
     const anyModalOpen =
       isSidebarOpen ||
       Boolean(addModalType) ||
+      Boolean(editingExpense) ||
+      Boolean(editingEvent) ||
       showSettleModal ||
       showSettleCarryModal ||
       showInstallModal;
@@ -560,7 +583,7 @@ export default function App() {
     return () => {
       document.body.style.overflow = '';
     };
-  }, [isSidebarOpen, addModalType, showSettleModal, showSettleCarryModal, showInstallModal]);
+  }, [isSidebarOpen, addModalType, editingExpense, editingEvent, showSettleModal, showSettleCarryModal, showInstallModal]);
 
   // --- PERSIST DATA TO LOCALSTORAGE ---
   useEffect(() => {
@@ -903,6 +926,193 @@ export default function App() {
     },
     [triggerToast]
   );
+
+  // --- EDIT EXPENSE WITH PARTNER AUDIT TRAIL ---
+  const openEditExpenseModal = useCallback(
+    (exp) => {
+      setEditingExpense(exp);
+      setEditExpTitle(exp.title || '');
+      setEditExpAmount(String(exp.amount || ''));
+      setEditExpCategory(exp.category || 'General Catering');
+      setEditExpPaidBy(exp.paidBy || 'ME');
+      setEditExpEventId(exp.eventId || 'GENERAL');
+      setEditExpDate(exp.date || getOffsetDate(0));
+      // If expense was paid by Nandu ('ME'), default editor to Shekhar, and vice versa!
+      setEditExpEditor(exp.paidBy === 'ME' ? names.brother : names.me);
+      setEditExpReason('');
+    },
+    [names]
+  );
+
+  const handleSaveEditedExpense = (e) => {
+    e.preventDefault();
+    if (!editingExpense || !editExpTitle.trim() || !editExpAmount || Number(editExpAmount) <= 0) return;
+
+    const now = new Date();
+    const timeStr =
+      now.toLocaleDateString('en-IN', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+      }) +
+      ' at ' +
+      now.toLocaleTimeString('en-IN', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+      });
+
+    const prevAmt = editingExpense.amount;
+    const newAmt = Number(editExpAmount);
+    const reasonText =
+      editExpReason.trim() ||
+      (prevAmt !== newAmt
+        ? `Amount adjusted from ₹${prevAmt} to ₹${newAmt}`
+        : 'Expense details updated');
+
+    const historyEntry = {
+      editedBy: editExpEditor,
+      editedAt: timeStr,
+      reason: reasonText,
+      prevAmount: prevAmt,
+      newAmount: newAmt,
+      prevTitle: editingExpense.title,
+      newTitle: editExpTitle.trim()
+    };
+
+    const updatedExp = {
+      ...editingExpense,
+      title: editExpTitle.trim(),
+      amount: newAmt,
+      category: editExpCategory.trim() || 'General Catering',
+      paidBy: editExpPaidBy,
+      eventId: editExpEventId,
+      date: editExpDate,
+      lastEditedBy: editExpEditor,
+      lastEditedAt: timeStr,
+      editReason: reasonText,
+      editHistory: [historyEntry, ...(editingExpense.editHistory || [])]
+    };
+
+    setExpenses((prev) => prev.map((x) => (x.id === updatedExp.id ? updatedExp : x)));
+
+    try {
+      supabase
+        .from('expenses')
+        .update(toDBExpense(updatedExp))
+        .eq('id', updatedExp.id)
+        .then(({ error }) => {
+          if (error) {
+            supabase
+              .from('expenses')
+              .update({
+                title: updatedExp.title,
+                amount: updatedExp.amount,
+                category: updatedExp.category,
+                paid_by: updatedExp.paidBy,
+                date: updatedExp.date
+              })
+              .eq('id', updatedExp.id)
+              .then();
+          }
+        });
+    } catch {}
+
+    setEditingExpense(null);
+    triggerToast(`Edited by ${editExpEditor}: Reason logged!`);
+  };
+
+  // --- EDIT EVENT WITH PARTNER AUDIT TRAIL ---
+  const openEditEventModal = useCallback(
+    (ev) => {
+      setEditingEvent(ev);
+      setEditEvtClient(ev.clientName || '');
+      setEditEvtAmount(String(ev.totalAmount || ''));
+      setEditEvtBroughtBy(ev.broughtBy || 'ME');
+      setEditEvtDate(ev.date || getOffsetDate(0));
+      setEditEvtNotes(ev.notes || '');
+      setEditEvtEditor(ev.broughtBy === 'ME' ? names.brother : names.me);
+      setEditEvtReason('');
+    },
+    [names]
+  );
+
+  const handleSaveEditedEvent = (e) => {
+    e.preventDefault();
+    if (!editingEvent || !editEvtClient.trim() || !editEvtAmount || Number(editEvtAmount) <= 0) return;
+
+    const now = new Date();
+    const timeStr =
+      now.toLocaleDateString('en-IN', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+      }) +
+      ' at ' +
+      now.toLocaleTimeString('en-IN', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+      });
+
+    const prevAmt = editingEvent.totalAmount;
+    const newAmt = Number(editEvtAmount);
+    const reasonText =
+      editEvtReason.trim() ||
+      (prevAmt !== newAmt
+        ? `Total updated from ₹${prevAmt} to ₹${newAmt}`
+        : 'Booking details updated');
+
+    const historyEntry = {
+      editedBy: editEvtEditor,
+      editedAt: timeStr,
+      reason: reasonText,
+      prevAmount: prevAmt,
+      newAmount: newAmt,
+      prevClient: editingEvent.clientName,
+      newClient: editEvtClient.trim()
+    };
+
+    const updatedEvt = {
+      ...editingEvent,
+      clientName: editEvtClient.trim(),
+      totalAmount: newAmt,
+      broughtBy: editEvtBroughtBy,
+      date: editEvtDate,
+      notes: editEvtNotes.trim(),
+      lastEditedBy: editEvtEditor,
+      lastEditedAt: timeStr,
+      editReason: reasonText,
+      editHistory: [historyEntry, ...(editingEvent.editHistory || [])]
+    };
+
+    setEvents((prev) => prev.map((e) => (e.id === updatedEvt.id ? updatedEvt : e)));
+
+    try {
+      supabase
+        .from('events')
+        .update(toDBEvent(updatedEvt))
+        .eq('id', updatedEvt.id)
+        .then(({ error }) => {
+          if (error) {
+            supabase
+              .from('events')
+              .update({
+                client_name: updatedEvt.clientName,
+                total_amount: updatedEvt.totalAmount,
+                brought_by: updatedEvt.broughtBy,
+                date: updatedEvt.date,
+                notes: updatedEvt.notes
+              })
+              .eq('id', updatedEvt.id)
+              .then();
+          }
+        });
+    } catch {}
+
+    setEditingEvent(null);
+    triggerToast(`Event updated by ${editEvtEditor}!`);
+  };
 
   // --- SETTLE CARRY FORWARD AT ANY POINT ---
   const openSettleCarryForwardModal = () => {
@@ -1382,22 +1592,22 @@ export default function App() {
       )}
 
       {/* =========================================================
-          MOBILE SIDEBAR BACKDROP OVERLAY
+          SLIDE-OVER DRAWER BACKDROP OVERLAY (DESKTOP & MOBILE)
          ========================================================= */}
       {isSidebarOpen && (
         <div
           onClick={() => setIsSidebarOpen(false)}
-          className="fixed inset-0 z-40 bg-slate-950/60 backdrop-blur-xs lg:hidden"
+          className="fixed inset-0 z-40 bg-slate-950/60 backdrop-blur-xs cursor-pointer"
         />
       )}
 
       {/* =========================================================
-          ORGANIZED SIDEBAR (FIXED ON DESKTOP, GPU SLIDE-OVER ON MOBILE)
+          ORGANIZED SIDEBAR (HIDDEN BY DEFAULT ON DESKTOP & MOBILE, OPENS AS DRAWER)
          ========================================================= */}
       <aside
-        className={`fixed lg:sticky top-0 left-0 z-50 h-[100dvh] w-72 shrink-0 border-r flex flex-col justify-between transition-transform duration-200 ease-out will-change-transform ${
+        className={`fixed top-0 left-0 z-50 h-[100dvh] w-72 shrink-0 border-r flex flex-col justify-between transition-transform duration-200 ease-out will-change-transform shadow-2xl ${
           t.headerBg
-        } ${isSidebarOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full lg:translate-x-0'}`}
+        } ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
         style={{
           paddingTop: 'env(safe-area-inset-top, 0px)',
           paddingBottom: 'env(safe-area-inset-bottom, 0px)'
@@ -1423,7 +1633,7 @@ export default function App() {
             <button
               type="button"
               onClick={() => setIsSidebarOpen(false)}
-              className={`lg:hidden p-2 rounded-xl border active:scale-95 transition-transform ${t.subtleBg} ${t.textSecondary}`}
+              className={`p-2 rounded-xl border active:scale-95 transition-transform cursor-pointer ${t.subtleBg} ${t.textSecondary} hover:bg-slate-200/70 dark:hover:bg-slate-700`}
               aria-label="Close Sidebar"
             >
               <X className="w-4 h-4" />
@@ -1640,17 +1850,18 @@ export default function App() {
           className={`sticky top-0 z-30 backdrop-blur-md border-b ${t.headerBg}`}
         >
           <div className="max-w-5xl mx-auto px-3.5 sm:px-6 h-14 sm:h-16 flex items-center justify-between gap-2">
-            {/* Left: Sidebar Hamburger (Mobile) + Active Section Title */}
+            {/* Left: Sidebar Hamburger + Active Section Title */}
             <div className="flex items-center gap-2.5 min-w-0">
               <button
                 type="button"
                 onClick={() => setIsSidebarOpen(true)}
                 aria-label="Open Menu Sidebar"
-                className={`lg:hidden p-2 rounded-xl border active:scale-90 transition-transform ${
+                className={`p-2 rounded-xl border active:scale-90 transition-transform cursor-pointer ${
                   isDark
                     ? 'bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-700'
                     : 'bg-slate-100 border-slate-200/90 text-slate-700 hover:bg-slate-200'
                 }`}
+                title="Open Tools & Settings Menu"
               >
                 <Menu className="w-5 h-5" />
               </button>
@@ -1669,6 +1880,67 @@ export default function App() {
                 </p>
               </div>
             </div>
+
+            {/* Center: Desktop Navigation Bar Pills */}
+            <nav className="hidden md:flex items-center gap-1 p-1 rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-slate-100/80 dark:bg-slate-900/80 backdrop-blur-md">
+              <button
+                type="button"
+                onClick={() => switchTabFast('home')}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  activeTab === 'home'
+                    ? 'bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 shadow-xs'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-white/50 dark:hover:bg-slate-800/50'
+                }`}
+              >
+                <Home className="w-3.5 h-3.5" />
+                <span>Overview</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => switchTabFast('events')}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  activeTab === 'events'
+                    ? 'bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 shadow-xs'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-white/50 dark:hover:bg-slate-800/50'
+                }`}
+              >
+                <Briefcase className="w-3.5 h-3.5" />
+                <span>Events</span>
+                <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300">
+                  {events.length}
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => switchTabFast('expenses')}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  activeTab === 'expenses'
+                    ? 'bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 shadow-xs'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-white/50 dark:hover:bg-slate-800/50'
+                }`}
+              >
+                <Receipt className="w-3.5 h-3.5" />
+                <span>Expenses</span>
+                <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300">
+                  {expenses.length}
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => switchTabFast('month')}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  activeTab === 'month'
+                    ? 'bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 shadow-xs'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-white/50 dark:hover:bg-slate-800/50'
+                }`}
+              >
+                <CalendarCheck className="w-3.5 h-3.5" />
+                <span>Report &amp; Excel</span>
+              </button>
+            </nav>
 
             {/* Right: Cloud Sync Status + Month & Year Selector */}
             <div className="flex items-center gap-2">
@@ -2248,7 +2520,10 @@ export default function App() {
                     </div>
                   ) : (
                     calculations.myEvents.map((ev) => (
-                      <div key={ev.id} className={`p-3.5 rounded-xl border ${t.subtleBg}`}>
+                      <div
+                        key={ev.id}
+                        className={`p-3.5 rounded-xl border hover-lift transition-all ${t.subtleBg}`}
+                      >
                         <div className="flex items-start justify-between gap-2">
                           <div className="min-w-0">
                             <h4 className={`text-sm font-bold truncate ${t.textPrimary}`}>
@@ -2258,14 +2533,41 @@ export default function App() {
                               {formatDisplayDate(ev.date)} {ev.notes ? `• ${ev.notes}` : ''}
                             </p>
                           </div>
-                          <button
-                            type="button"
-                            onClick={() => handleDeleteEvent(ev.id)}
-                            className="p-1.5 text-slate-400 hover:text-rose-500 active:scale-90 shrink-0"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
+                          <div className="flex items-center gap-1 shrink-0">
+                            <button
+                              type="button"
+                              onClick={() => openEditEventModal(ev)}
+                              className="p-1.5 text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 active:scale-90 transition-transform cursor-pointer"
+                              title="Edit event details"
+                            >
+                              <Pencil className="w-4 h-4" />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteEvent(ev.id)}
+                              className="p-1.5 text-slate-400 hover:text-rose-500 active:scale-90 transition-transform cursor-pointer"
+                              title="Delete event"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
                         </div>
+
+                        {/* Audit Trail Note if Edited by Partner */}
+                        {ev.lastEditedBy && (
+                          <div className="mt-2.5 pt-2 border-t border-slate-200/60 dark:border-slate-700/60 flex flex-wrap items-center gap-1.5 text-[11px]">
+                            <span className="inline-flex items-center gap-1 font-bold text-amber-700 dark:text-amber-300 bg-amber-500/15 px-2 py-0.5 rounded-md border border-amber-500/30">
+                              ✏️ Edited by {ev.lastEditedBy}
+                            </span>
+                            <span className="text-slate-400 text-[10px]">({ev.lastEditedAt})</span>
+                            {ev.editReason && (
+                              <span className="italic font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-md border border-slate-200 dark:border-slate-700">
+                                Note: &ldquo;{ev.editReason}&rdquo;
+                              </span>
+                            )}
+                          </div>
+                        )}
+
                         <div className="mt-2.5 pt-2.5 border-t border-slate-200/60 dark:border-slate-700/60 flex items-center justify-between text-xs tabular-nums">
                           <span>
                             Total: <strong className={t.textPrimary}>{formatINR(ev.totalAmount)}</strong>
@@ -2356,7 +2658,10 @@ export default function App() {
                     </div>
                   ) : (
                     calculations.brotherEvents.map((ev) => (
-                      <div key={ev.id} className={`p-3.5 rounded-xl border ${t.subtleBg}`}>
+                      <div
+                        key={ev.id}
+                        className={`p-3.5 rounded-xl border hover-lift transition-all ${t.subtleBg}`}
+                      >
                         <div className="flex items-start justify-between gap-2">
                           <div className="min-w-0">
                             <h4 className={`text-sm font-bold truncate ${t.textPrimary}`}>
@@ -2366,14 +2671,41 @@ export default function App() {
                               {formatDisplayDate(ev.date)} {ev.notes ? `• ${ev.notes}` : ''}
                             </p>
                           </div>
-                          <button
-                            type="button"
-                            onClick={() => handleDeleteEvent(ev.id)}
-                            className="p-1.5 text-slate-400 hover:text-rose-500 active:scale-90 shrink-0"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
+                          <div className="flex items-center gap-1 shrink-0">
+                            <button
+                              type="button"
+                              onClick={() => openEditEventModal(ev)}
+                              className="p-1.5 text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 active:scale-90 transition-transform cursor-pointer"
+                              title="Edit event details"
+                            >
+                              <Pencil className="w-4 h-4" />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteEvent(ev.id)}
+                              className="p-1.5 text-slate-400 hover:text-rose-500 active:scale-90 transition-transform cursor-pointer"
+                              title="Delete event"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
                         </div>
+
+                        {/* Audit Trail Note if Edited by Partner */}
+                        {ev.lastEditedBy && (
+                          <div className="mt-2.5 pt-2 border-t border-slate-200/60 dark:border-slate-700/60 flex flex-wrap items-center gap-1.5 text-[11px]">
+                            <span className="inline-flex items-center gap-1 font-bold text-amber-700 dark:text-amber-300 bg-amber-500/15 px-2 py-0.5 rounded-md border border-amber-500/30">
+                              ✏️ Edited by {ev.lastEditedBy}
+                            </span>
+                            <span className="text-slate-400 text-[10px]">({ev.lastEditedAt})</span>
+                            {ev.editReason && (
+                              <span className="italic font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-md border border-slate-200 dark:border-slate-700">
+                                Note: &ldquo;{ev.editReason}&rdquo;
+                              </span>
+                            )}
+                          </div>
+                        )}
+
                         <div className="mt-2.5 pt-2.5 border-t border-slate-200/60 dark:border-slate-700/60 flex items-center justify-between text-xs tabular-nums">
                           <span>
                             Total: <strong className={t.textPrimary}>{formatINR(ev.totalAmount)}</strong>
@@ -2487,50 +2819,76 @@ export default function App() {
                     {calculations.myExpensesList.map((item) => (
                       <div
                         key={item.id}
-                        className={`flex items-center justify-between gap-3 p-3.5 rounded-xl border ${t.subtleBg}`}
+                        className={`p-3.5 rounded-xl border hover-lift transition-all ${t.subtleBg}`}
                       >
-                        <div className="min-w-0">
-                          <div className={`text-sm font-bold truncate ${t.textPrimary}`}>
-                            {item.title}
+                        <div className="flex items-center justify-between gap-3">
+                          <div className="min-w-0">
+                            <div className={`text-sm font-bold truncate ${t.textPrimary}`}>
+                              {item.title}
+                            </div>
+                            <div className="flex flex-wrap items-center gap-1.5 mt-1 text-[11px]">
+                              <span className={t.textSecondary}>{formatDisplayDate(item.date)}</span>
+                              <span
+                                className={`px-2 py-0.5 rounded-md font-semibold ${
+                                  isDark
+                                    ? 'bg-slate-800 text-slate-300'
+                                    : 'bg-white text-slate-700 border border-slate-200'
+                                }`}
+                              >
+                                {item.category}
+                              </span>
+                              <span
+                                className={`px-2 py-0.5 rounded-md font-semibold truncate max-w-[180px] ${
+                                  isDark
+                                    ? 'bg-indigo-500/15 text-indigo-300'
+                                    : 'bg-indigo-50 text-indigo-700'
+                                }`}
+                              >
+                                {getEventLabel(item.eventId)}
+                              </span>
+                            </div>
                           </div>
-                          <div className="flex flex-wrap items-center gap-1.5 mt-1 text-[11px]">
-                            <span className={t.textSecondary}>{formatDisplayDate(item.date)}</span>
+                          <div className="flex items-center gap-1.5 shrink-0">
                             <span
-                              className={`px-2 py-0.5 rounded-md font-semibold ${
-                                isDark
-                                  ? 'bg-slate-800 text-slate-300'
-                                  : 'bg-white text-slate-700 border border-slate-200'
+                              className={`text-sm font-black tabular-nums ${
+                                isDark ? 'text-rose-400' : 'text-rose-600'
                               }`}
                             >
-                              {item.category}
+                              −{formatINR(item.amount)}
                             </span>
-                            <span
-                              className={`px-2 py-0.5 rounded-md font-semibold truncate max-w-[180px] ${
-                                isDark
-                                  ? 'bg-indigo-500/15 text-indigo-300'
-                                  : 'bg-indigo-50 text-indigo-700'
-                              }`}
+                            <button
+                              type="button"
+                              onClick={() => openEditExpenseModal(item)}
+                              className="p-1.5 text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 active:scale-90 transition-transform cursor-pointer"
+                              title="Edit expense details and reason"
                             >
-                              {getEventLabel(item.eventId)}
-                            </span>
+                              <Pencil className="w-4 h-4" />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteExpense(item.id)}
+                              className="p-1.5 text-slate-400 hover:text-rose-500 active:scale-90 transition-transform cursor-pointer"
+                              title="Delete expense"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
                           </div>
                         </div>
-                        <div className="flex items-center gap-2 shrink-0">
-                          <span
-                            className={`text-sm font-black tabular-nums ${
-                              isDark ? 'text-rose-400' : 'text-rose-600'
-                            }`}
-                          >
-                            −{formatINR(item.amount)}
-                          </span>
-                          <button
-                            type="button"
-                            onClick={() => handleDeleteExpense(item.id)}
-                            className="p-1.5 text-slate-400 hover:text-rose-500 active:scale-90"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </div>
+
+                        {/* Audit Trail Note if Edited by Partner */}
+                        {item.lastEditedBy && (
+                          <div className="mt-2.5 pt-2 border-t border-slate-200/60 dark:border-slate-700/60 flex flex-wrap items-center gap-1.5 text-[11px]">
+                            <span className="inline-flex items-center gap-1 font-bold text-amber-700 dark:text-amber-300 bg-amber-500/15 px-2 py-0.5 rounded-md border border-amber-500/30">
+                              ✏️ Edited by {item.lastEditedBy}
+                            </span>
+                            <span className="text-slate-400 text-[10px]">({item.lastEditedAt})</span>
+                            {item.editReason && (
+                              <span className="italic font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-md border border-slate-200 dark:border-slate-700">
+                                Note: &ldquo;{item.editReason}&rdquo;
+                              </span>
+                            )}
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -2576,50 +2934,76 @@ export default function App() {
                     {calculations.brotherExpensesList.map((item) => (
                       <div
                         key={item.id}
-                        className={`flex items-center justify-between gap-3 p-3.5 rounded-xl border ${t.subtleBg}`}
+                        className={`p-3.5 rounded-xl border hover-lift transition-all ${t.subtleBg}`}
                       >
-                        <div className="min-w-0">
-                          <div className={`text-sm font-bold truncate ${t.textPrimary}`}>
-                            {item.title}
+                        <div className="flex items-center justify-between gap-3">
+                          <div className="min-w-0">
+                            <div className={`text-sm font-bold truncate ${t.textPrimary}`}>
+                              {item.title}
+                            </div>
+                            <div className="flex flex-wrap items-center gap-1.5 mt-1 text-[11px]">
+                              <span className={t.textSecondary}>{formatDisplayDate(item.date)}</span>
+                              <span
+                                className={`px-2 py-0.5 rounded-md font-semibold ${
+                                  isDark
+                                    ? 'bg-slate-800 text-slate-300'
+                                    : 'bg-white text-slate-700 border border-slate-200'
+                                }`}
+                              >
+                                {item.category}
+                              </span>
+                              <span
+                                className={`px-2 py-0.5 rounded-md font-semibold truncate max-w-[180px] ${
+                                  isDark
+                                    ? 'bg-purple-500/15 text-purple-300'
+                                    : 'bg-purple-50 text-purple-700'
+                                }`}
+                              >
+                                {getEventLabel(item.eventId)}
+                              </span>
+                            </div>
                           </div>
-                          <div className="flex flex-wrap items-center gap-1.5 mt-1 text-[11px]">
-                            <span className={t.textSecondary}>{formatDisplayDate(item.date)}</span>
+                          <div className="flex items-center gap-1.5 shrink-0">
                             <span
-                              className={`px-2 py-0.5 rounded-md font-semibold ${
-                                isDark
-                                  ? 'bg-slate-800 text-slate-300'
-                                  : 'bg-white text-slate-700 border border-slate-200'
+                              className={`text-sm font-black tabular-nums ${
+                                isDark ? 'text-purple-300' : 'text-purple-700'
                               }`}
                             >
-                              {item.category}
+                              {formatINR(item.amount)}
                             </span>
-                            <span
-                              className={`px-2 py-0.5 rounded-md font-semibold truncate max-w-[180px] ${
-                                isDark
-                                  ? 'bg-purple-500/15 text-purple-300'
-                                  : 'bg-purple-50 text-purple-700'
-                              }`}
+                            <button
+                              type="button"
+                              onClick={() => openEditExpenseModal(item)}
+                              className="p-1.5 text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 active:scale-90 transition-transform cursor-pointer"
+                              title="Edit expense details and reason"
                             >
-                              {getEventLabel(item.eventId)}
-                            </span>
+                              <Pencil className="w-4 h-4" />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteExpense(item.id)}
+                              className="p-1.5 text-slate-400 hover:text-rose-500 active:scale-90 transition-transform cursor-pointer"
+                              title="Delete expense"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
                           </div>
                         </div>
-                        <div className="flex items-center gap-2 shrink-0">
-                          <span
-                            className={`text-sm font-black tabular-nums ${
-                              isDark ? 'text-purple-300' : 'text-purple-700'
-                            }`}
-                          >
-                            {formatINR(item.amount)}
-                          </span>
-                          <button
-                            type="button"
-                            onClick={() => handleDeleteExpense(item.id)}
-                            className="p-1.5 text-slate-400 hover:text-rose-500 active:scale-90"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </div>
+
+                        {/* Audit Trail Note if Edited by Partner */}
+                        {item.lastEditedBy && (
+                          <div className="mt-2.5 pt-2 border-t border-slate-200/60 dark:border-slate-700/60 flex flex-wrap items-center gap-1.5 text-[11px]">
+                            <span className="inline-flex items-center gap-1 font-bold text-amber-700 dark:text-amber-300 bg-amber-500/15 px-2 py-0.5 rounded-md border border-amber-500/30">
+                              ✏️ Edited by {item.lastEditedBy}
+                            </span>
+                            <span className="text-slate-400 text-[10px]">({item.lastEditedAt})</span>
+                            {item.editReason && (
+                              <span className="italic font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-md border border-slate-200 dark:border-slate-700">
+                                Note: &ldquo;{item.editReason}&rdquo;
+                              </span>
+                            )}
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -2928,6 +3312,370 @@ export default function App() {
           </div>
         )}
       </main>
+
+      {/* =========================================================
+          MODAL: EDIT EXPENSE WITH PARTNER AUDIT TRAIL
+         ========================================================= */}
+      {editingExpense && (
+        <div
+          onClick={() => setEditingExpense(null)}
+          className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 cursor-pointer"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className={`animate-sheet w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl border p-5 max-h-[90dvh] overflow-y-auto overscroll-contain shadow-2xl cursor-default ${t.cardBg} ${t.border}`}
+            style={{ paddingBottom: 'calc(1.25rem + env(safe-area-inset-bottom, 0px))' }}
+          >
+            <div className="w-10 h-1 rounded-full bg-slate-300 dark:bg-slate-700 mx-auto mb-3 sm:hidden" />
+
+            <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-200 dark:border-slate-800">
+              <div className="flex items-center gap-2">
+                <div className="p-2 rounded-xl bg-amber-500 text-white shadow-sm">
+                  <Pencil className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className={`text-base font-extrabold ${t.textPrimary}`}>Edit Expense Details</h3>
+                  <p className={`text-[11px] ${t.textSecondary}`}>
+                    Logged by {editingExpense.paidBy === 'ME' ? names.me : names.brother} • Audited changes
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setEditingExpense(null)}
+                className={`p-1.5 rounded-xl border active:scale-90 cursor-pointer ${t.subtleBg} ${t.textSecondary}`}
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveEditedExpense} className="space-y-4">
+              {/* Who is Editing Selector */}
+              <div>
+                <label className={`block text-xs font-bold mb-1.5 ${t.textPrimary}`}>
+                  Who is making this change?
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setEditExpEditor(names.me)}
+                    className={`py-2 px-3 rounded-xl border text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                      editExpEditor === names.me
+                        ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm'
+                        : `${t.inputBg} ${t.textSecondary} hover:bg-slate-200/60 dark:hover:bg-slate-700/60`
+                    }`}
+                  >
+                    <span>👤 {names.me}</span>
+                    {editingExpense.paidBy === 'ME' && (
+                      <span className="text-[10px] opacity-75">(Owner)</span>
+                    )}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setEditExpEditor(names.brother)}
+                    className={`py-2 px-3 rounded-xl border text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                      editExpEditor === names.brother
+                        ? 'bg-purple-600 text-white border-purple-600 shadow-sm'
+                        : `${t.inputBg} ${t.textSecondary} hover:bg-slate-200/60 dark:hover:bg-slate-700/60`
+                    }`}
+                  >
+                    <span>👤 {names.brother}</span>
+                    {editingExpense.paidBy === 'BROTHER' && (
+                      <span className="text-[10px] opacity-75">(Owner)</span>
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* Title & Amount */}
+              <div>
+                <label className={`block text-xs font-bold mb-1 ${t.textPrimary}`}>
+                  Expense Description *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={editExpTitle}
+                  onChange={(e) => setEditExpTitle(e.target.value)}
+                  placeholder="e.g. Vegetables, Gas, Halwai"
+                  className={`w-full rounded-xl px-3.5 py-2.5 text-sm font-semibold border ${t.inputBg}`}
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-2.5">
+                <div>
+                  <label className={`block text-xs font-bold mb-1 ${t.textPrimary}`}>
+                    Amount (₹) *
+                  </label>
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    required
+                    value={editExpAmount}
+                    onChange={(e) => setEditExpAmount(e.target.value.replace(/[^0-9]/g, ''))}
+                    placeholder="₹ Amount"
+                    className={`w-full rounded-xl px-3.5 py-2.5 text-sm font-black tabular-nums border ${t.inputBg}`}
+                  />
+                </div>
+
+                <div>
+                  <label className={`block text-xs font-bold mb-1 ${t.textPrimary}`}>
+                    Paid By Account
+                  </label>
+                  <select
+                    value={editExpPaidBy}
+                    onChange={(e) => setEditExpPaidBy(e.target.value)}
+                    className={`w-full rounded-xl px-3 py-2.5 text-xs font-bold border ${t.inputBg}`}
+                  >
+                    <option value="ME">{names.me}&apos;s Account</option>
+                    <option value="BROTHER">{names.brother}&apos;s Reference</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Category & Date */}
+              <div className="grid grid-cols-2 gap-2.5">
+                <div>
+                  <label className={`block text-xs font-bold mb-1 ${t.textPrimary}`}>Category</label>
+                  <input
+                    type="text"
+                    value={editExpCategory}
+                    onChange={(e) => setEditExpCategory(e.target.value)}
+                    placeholder="e.g. Groceries, Staff"
+                    className={`w-full rounded-xl px-3 py-2.5 text-xs font-semibold border ${t.inputBg}`}
+                  />
+                </div>
+
+                <div>
+                  <ClickableDateInput
+                    label="Date"
+                    value={editExpDate}
+                    onChange={setEditExpDate}
+                    isDark={isDark}
+                  />
+                </div>
+              </div>
+
+              {/* Note / Reason for Edit (REQUIRED / RECOMMENDED) */}
+              <div className="p-3 rounded-xl border border-amber-500/30 bg-amber-500/5 dark:bg-amber-500/10 space-y-1.5">
+                <label className="block text-xs font-bold text-amber-700 dark:text-amber-300">
+                  📝 Reason for this Edit (Why is this changed?) *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={editExpReason}
+                  onChange={(e) => setEditExpReason(e.target.value)}
+                  placeholder="e.g. Bill corrected after checking receipt, vendor discount"
+                  className={`w-full rounded-xl px-3 py-2 text-xs font-medium border ${t.inputBg}`}
+                />
+                <p className="text-[10px] text-amber-600 dark:text-amber-400">
+                  This note and your name ({editExpEditor}) will be recorded permanently with the timestamp.
+                </p>
+              </div>
+
+              <div className="pt-2 flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setEditingExpense(null)}
+                  className={`flex-1 py-3 rounded-xl border font-bold text-xs cursor-pointer ${t.subtleBg} ${t.textSecondary}`}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 py-3 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs shadow-md transition-all cursor-pointer hover:brightness-110 active:scale-95"
+                >
+                  Save &amp; Log Edit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* =========================================================
+          MODAL: EDIT EVENT WITH PARTNER AUDIT TRAIL
+         ========================================================= */}
+      {editingEvent && (
+        <div
+          onClick={() => setEditingEvent(null)}
+          className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 cursor-pointer"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className={`animate-sheet w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl border p-5 max-h-[90dvh] overflow-y-auto overscroll-contain shadow-2xl cursor-default ${t.cardBg} ${t.border}`}
+            style={{ paddingBottom: 'calc(1.25rem + env(safe-area-inset-bottom, 0px))' }}
+          >
+            <div className="w-10 h-1 rounded-full bg-slate-300 dark:bg-slate-700 mx-auto mb-3 sm:hidden" />
+
+            <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-200 dark:border-slate-800">
+              <div className="flex items-center gap-2">
+                <div className="p-2 rounded-xl bg-amber-500 text-white shadow-sm">
+                  <Pencil className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className={`text-base font-extrabold ${t.textPrimary}`}>Edit Event Details</h3>
+                  <p className={`text-[11px] ${t.textSecondary}`}>
+                    Brought by {editingEvent.broughtBy === 'ME' ? names.me : names.brother} • Audited changes
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setEditingEvent(null)}
+                className={`p-1.5 rounded-xl border active:scale-90 cursor-pointer ${t.subtleBg} ${t.textSecondary}`}
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveEditedEvent} className="space-y-4">
+              {/* Who is Editing Selector */}
+              <div>
+                <label className={`block text-xs font-bold mb-1.5 ${t.textPrimary}`}>
+                  Who is making this change?
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setEditEvtEditor(names.me)}
+                    className={`py-2 px-3 rounded-xl border text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                      editEvtEditor === names.me
+                        ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm'
+                        : `${t.inputBg} ${t.textSecondary} hover:bg-slate-200/60 dark:hover:bg-slate-700/60`
+                    }`}
+                  >
+                    <span>👤 {names.me}</span>
+                    {editingEvent.broughtBy === 'ME' && (
+                      <span className="text-[10px] opacity-75">(Owner)</span>
+                    )}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setEditEvtEditor(names.brother)}
+                    className={`py-2 px-3 rounded-xl border text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                      editEvtEditor === names.brother
+                        ? 'bg-purple-600 text-white border-purple-600 shadow-sm'
+                        : `${t.inputBg} ${t.textSecondary} hover:bg-slate-200/60 dark:hover:bg-slate-700/60`
+                    }`}
+                  >
+                    <span>👤 {names.brother}</span>
+                    {editingEvent.broughtBy === 'BROTHER' && (
+                      <span className="text-[10px] opacity-75">(Owner)</span>
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* Client Name & Amount */}
+              <div>
+                <label className={`block text-xs font-bold mb-1 ${t.textPrimary}`}>
+                  Client / Event Title *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={editEvtClient}
+                  onChange={(e) => setEditEvtClient(e.target.value)}
+                  placeholder="e.g. Sharma Wedding"
+                  className={`w-full rounded-xl px-3.5 py-2.5 text-sm font-semibold border ${t.inputBg}`}
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-2.5">
+                <div>
+                  <label className={`block text-xs font-bold mb-1 ${t.textPrimary}`}>
+                    Total Package Amount (₹) *
+                  </label>
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    required
+                    value={editEvtAmount}
+                    onChange={(e) => setEditEvtAmount(e.target.value.replace(/[^0-9]/g, ''))}
+                    placeholder="₹ Amount"
+                    className={`w-full rounded-xl px-3.5 py-2.5 text-sm font-black tabular-nums border ${t.inputBg}`}
+                  />
+                </div>
+
+                <div>
+                  <label className={`block text-xs font-bold mb-1 ${t.textPrimary}`}>
+                    Brought By
+                  </label>
+                  <select
+                    value={editEvtBroughtBy}
+                    onChange={(e) => setEditEvtBroughtBy(e.target.value)}
+                    className={`w-full rounded-xl px-3 py-2.5 text-xs font-bold border ${t.inputBg}`}
+                  >
+                    <option value="ME">{names.me} (10% Cut)</option>
+                    <option value="BROTHER">{names.brother} (0% Cut)</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Date & Notes */}
+              <div>
+                <ClickableDateInput
+                  label="Event Date"
+                  value={editEvtDate}
+                  onChange={setEditEvtDate}
+                  isDark={isDark}
+                />
+              </div>
+
+              <div>
+                <label className={`block text-xs font-bold mb-1 ${t.textPrimary}`}>
+                  Event Notes / Specifications
+                </label>
+                <input
+                  type="text"
+                  value={editEvtNotes}
+                  onChange={(e) => setEditEvtNotes(e.target.value)}
+                  placeholder="e.g. 500 plates, VIP buffet"
+                  className={`w-full rounded-xl px-3.5 py-2 text-xs font-medium border ${t.inputBg}`}
+                />
+              </div>
+
+              {/* Note / Reason for Edit */}
+              <div className="p-3 rounded-xl border border-amber-500/30 bg-amber-500/5 dark:bg-amber-500/10 space-y-1.5">
+                <label className="block text-xs font-bold text-amber-700 dark:text-amber-300">
+                  📝 Reason for this Edit (Why is this changed?) *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={editEvtReason}
+                  onChange={(e) => setEditEvtReason(e.target.value)}
+                  placeholder="e.g. Client added 50 extra plates, corrected advance payment"
+                  className={`w-full rounded-xl px-3 py-2 text-xs font-medium border ${t.inputBg}`}
+                />
+                <p className="text-[10px] text-amber-600 dark:text-amber-400">
+                  This note and your name ({editEvtEditor}) will be recorded permanently with the timestamp.
+                </p>
+              </div>
+
+              <div className="pt-2 flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setEditingEvent(null)}
+                  className={`flex-1 py-3 rounded-xl border font-bold text-xs cursor-pointer ${t.subtleBg} ${t.textSecondary}`}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 py-3 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs shadow-md transition-all cursor-pointer hover:brightness-110 active:scale-95"
+                >
+                  Save &amp; Log Edit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* =========================================================
           DEDICATED MODAL 1: ADD EXPENSE ONLY (Branded Bottom Sheet on Mobile)

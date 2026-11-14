@@ -8,3 +8,33 @@ html, body {
   min-height: 100%;
 }
 
+/* Universal interactive cursor pointer */
+button, select, input[type="radio"], input[type="checkbox"], [role="button"], label, a, .clickable {
+  cursor: pointer;
+}
+
+/* Smooth micro-interactions & cursor hover transitions */
+.hover-lift {
+  transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.16s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.16s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+}
+
+.dark .hover-lift:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+}
+
+.hover-pill {
+  transition: all 0.15s ease;
+}
+
+.hover-pill:hover {
+  transform: scale(1.02);
+}
+
+.hover-pill:active {
+  transform: scale(0.96);
+}

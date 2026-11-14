@@ -40,6 +40,17 @@ create table if not exists public.app_state (
   updated_at timestamptz default now()
 );
 
+-- 5. Audit Trail & Edit Tracking Columns
+alter table public.expenses add column if not exists last_edited_by text;
+alter table public.expenses add column if not exists last_edited_at text;
+alter table public.expenses add column if not exists edit_reason text;
+alter table public.expenses add column if not exists edit_history jsonb default '[]'::jsonb;
+
+alter table public.events add column if not exists last_edited_by text;
+alter table public.events add column if not exists last_edited_at text;
+alter table public.events add column if not exists edit_reason text;
+alter table public.events add column if not exists edit_history jsonb default '[]'::jsonb;
+
 -- ==============================================================================
 -- ROW LEVEL SECURITY (RLS) - Shared Access for 2 Partners
 -- ==============================================================================
