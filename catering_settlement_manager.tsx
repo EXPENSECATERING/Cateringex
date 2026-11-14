@@ -28,8 +28,11 @@ import {
   Moon,
   Smartphone,
   Share,
-  Menu
+  Menu,
+  Cloud,
+  CloudOff
 } from 'lucide-react';
+import { supabase, toDBEvent, fromDBEvent, toDBExpense, fromDBExpense } from './src/supabase';
 
 // --- SINGLETON INDIAN RUPEE FORMATTER (ZERO RE-INSTANTIATION OVERHEAD) ---
 const inrFormatter = new Intl.NumberFormat('en-IN', {
@@ -478,6 +481,9 @@ export default function App() {
     }
   });
 
+  // --- CLOUD SYNC STATE (SUPABASE) ---
+  const [syncStatus, setSyncStatus] = useState<'connected' | 'syncing' | 'offline'>('syncing');
+
   // --- SEPARATE MODAL STATES ---
   const [addModalType, setAddModalType] = useState(null); // 'EXPENSE' | 'EVENT' | null
   const [showSettleModal, setShowSettleModal] = useState(false);
@@ -592,6 +598,99 @@ export default function App() {
       localStorage.setItem('catering_archived_settlements_v3', JSON.stringify(archivedSettlements));
     } catch {}
   }, [archivedSettlements]);
+
+  // --- REAL-TIME SUPABASE CLOUD SYNC ---
+  useEffect(() => {
+    let active = true;
+
+    async function initSupabase() {
+      try {
+        const [evtsRes, expsRes, stateRes] = await Promise.all([
+          supabase.from('events').select('*').order('date', { ascending: false }),
+          supabase.from('expenses').select('*').order('date', { ascending: false }),
+          supabase.from('app_state').select('*')
+        ]);
+
+        if (evtsRes.error && expsRes.error) {
+          if (active) setSyncStatus('offline');
+          return;
+        }
+
+        if (active) setSyncStatus('connected');
+
+        if (evtsRes.data && evtsRes.data.length > 0) {
+          if (active) setEvents(evtsRes.data.map(fromDBEvent));
+        } else if (events.length > 0) {
+          supabase.from('events').insert(events.map(toDBEvent)).then();
+        }
+
+        if (expsRes.data && expsRes.data.length > 0) {
+          if (active) setExpenses(expsRes.data.map(fromDBExpense));
+        } else if (expenses.length > 0) {
+          supabase.from('expenses').insert(expenses.map(toDBExpense)).then();
+        }
+
+        if (stateRes.data && stateRes.data.length > 0) {
+          stateRes.data.forEach((row: any) => {
+            if (row.key === 'carry_forward' && row.value && active) setCarryForward(row.value);
+            if (row.key === 'active_cycle_month' && row.value && active) setActiveCycleMonth(row.value);
+            if (row.key === 'archived_settlements' && row.value && active) setArchivedSettlements(row.value);
+          });
+        }
+      } catch (err) {
+        if (active) setSyncStatus('offline');
+      }
+    }
+
+    initSupabase();
+
+    const channel = supabase
+      .channel('catering_live_sync')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'events' }, (payload: any) => {
+        if (!active) return;
+        if (payload.eventType === 'INSERT') {
+          const item = fromDBEvent(payload.new);
+          setEvents((prev) => (prev.some((e) => e.id === item.id) ? prev : [item, ...prev]));
+        } else if (payload.eventType === 'DELETE') {
+          setEvents((prev) => prev.filter((e) => e.id !== payload.old.id));
+        } else if (payload.eventType === 'UPDATE') {
+          const item = fromDBEvent(payload.new);
+          setEvents((prev) => prev.map((e) => (e.id === item.id ? item : e)));
+        }
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'expenses' }, (payload: any) => {
+        if (!active) return;
+        if (payload.eventType === 'INSERT') {
+          const item = fromDBExpense(payload.new);
+          setExpenses((prev) => (prev.some((x) => x.id === item.id) ? prev : [item, ...prev]));
+        } else if (payload.eventType === 'DELETE') {
+          setExpenses((prev) => prev.filter((x) => x.id !== payload.old.id));
+        } else if (payload.eventType === 'UPDATE') {
+          const item = fromDBExpense(payload.new);
+          setExpenses((prev) => prev.map((x) => (x.id === item.id ? item : x)));
+        }
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'app_state' }, (payload: any) => {
+        if (!active) return;
+        if (payload.new?.key === 'carry_forward' && payload.new?.value) {
+          setCarryForward(payload.new.value);
+        } else if (payload.new?.key === 'active_cycle_month' && payload.new?.value) {
+          setActiveCycleMonth(payload.new.value);
+        } else if (payload.new?.key === 'archived_settlements' && payload.new?.value) {
+          setArchivedSettlements(payload.new.value);
+        }
+      })
+      .subscribe((status) => {
+        if (status === 'SUBSCRIBED' && active) {
+          setSyncStatus('connected');
+        }
+      });
+
+    return () => {
+      active = false;
+      supabase.removeChannel(channel);
+    };
+  }, []);
 
   const triggerToast = useCallback((msg) => {
     if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
@@ -746,6 +845,9 @@ export default function App() {
     };
 
     setEvents([newEvent, ...events]);
+    try {
+      supabase.from('events').insert(toDBEvent(newEvent)).then();
+    } catch {}
     setEvtClient('');
     setEvtAmount('');
     setEvtNotes('');
@@ -768,6 +870,9 @@ export default function App() {
     };
 
     setExpenses([newExp, ...expenses]);
+    try {
+      supabase.from('expenses').insert(toDBExpense(newExp)).then();
+    } catch {}
     setExpTitle('');
     setExpAmount('');
     setExpCategory('');
@@ -780,6 +885,9 @@ export default function App() {
   const handleDeleteEvent = useCallback(
     (id) => {
       setEvents((prev) => prev.filter((e) => e.id !== id));
+      try {
+        supabase.from('events').delete().eq('id', id).then();
+      } catch {}
       triggerToast('Event removed');
     },
     [triggerToast]
@@ -788,6 +896,9 @@ export default function App() {
   const handleDeleteExpense = useCallback(
     (id) => {
       setExpenses((prev) => prev.filter((x) => x.id !== id));
+      try {
+        supabase.from('expenses').delete().eq('id', id).then();
+      } catch {}
       triggerToast('Expense removed');
     },
     [triggerToast]
@@ -823,13 +934,17 @@ export default function App() {
       updatedCF = Math.min(0, currentCF + paidAmount);
     }
 
-    setCarryForward({
+    const newCFObj = {
       amount: updatedCF,
       note:
         updatedCF !== 0
           ? `${carryForward.note || 'Carry forward'} (${formatINR(paidAmount)} settled on ${formatDisplayDate(getOffsetDate(0))})`
           : ''
-    });
+    };
+    setCarryForward(newCFObj);
+    try {
+      supabase.from('app_state').upsert({ key: 'carry_forward', value: newCFObj, updated_at: new Date().toISOString() }).then();
+    } catch {}
 
     setShowSettleCarryModal(false);
     setCarrySettleCustom('');
@@ -887,20 +1002,34 @@ export default function App() {
       expensesSnapshot: [...expenses]
     };
 
-    setArchivedSettlements([snapshot, ...archivedSettlements]);
-    setEvents([]);
-    setExpenses([]);
-    setSettlements([]);
-    setCarryForward({
+    const newArchived = [snapshot, ...archivedSettlements];
+    const newCF = {
       amount: remainingCarryForward,
       note:
         remainingCarryForward !== 0
           ? `Carry forward from ${monthTitle} (${formatDisplayDate(getOffsetDate(0))})`
           : ''
-    });
+    };
+
+    setArchivedSettlements(newArchived);
+    setEvents([]);
+    setExpenses([]);
+    setSettlements([]);
+    setCarryForward(newCF);
 
     const nextCycle = getNextMonthYear(closeMonthName, closeMonthYear);
     setActiveCycleMonth(nextCycle);
+
+    try {
+      supabase.from('settlements').insert({ id: snapshot.id, data: snapshot }).then();
+      supabase.from('app_state').upsert([
+        { key: 'carry_forward', value: newCF, updated_at: new Date().toISOString() },
+        { key: 'active_cycle_month', value: nextCycle, updated_at: new Date().toISOString() },
+        { key: 'archived_settlements', value: newArchived, updated_at: new Date().toISOString() }
+      ]).then();
+      supabase.from('events').delete().neq('id', 'NONE').then();
+      supabase.from('expenses').delete().neq('id', 'NONE').then();
+    } catch {}
     setCloseMonthName(nextCycle.month);
     setCloseMonthYear(nextCycle.year);
     setShowSettleModal(false);
@@ -1541,12 +1670,47 @@ export default function App() {
               </div>
             </div>
 
-            {/* Right: Clean Month & Infinite Year Selector Pill */}
-            <div
-              className={`flex items-center gap-1 px-2.5 py-1.5 rounded-xl border shrink-0 ${
-                isDark ? 'bg-slate-800 border-slate-700' : 'bg-slate-100/90 border-slate-200/90'
-              }`}
-            >
+            {/* Right: Cloud Sync Status + Month & Year Selector */}
+            <div className="flex items-center gap-2">
+              <div
+                className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border text-[11px] font-bold transition-all shrink-0 ${
+                  syncStatus === 'connected'
+                    ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30'
+                    : syncStatus === 'syncing'
+                    ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30'
+                    : 'bg-slate-500/10 text-slate-500 dark:text-slate-400 border-slate-500/20'
+                }`}
+                title={
+                  syncStatus === 'connected'
+                    ? 'Connected to Supabase. Live 2-way sync active between phones!'
+                    : syncStatus === 'syncing'
+                    ? 'Connecting to Supabase...'
+                    : 'Local Cache Mode (Run SQL schema in Supabase to enable cloud sync)'
+                }
+              >
+                <span
+                  className={`w-2 h-2 rounded-full ${
+                    syncStatus === 'connected'
+                      ? 'bg-emerald-500 animate-pulse'
+                      : syncStatus === 'syncing'
+                      ? 'bg-amber-500 animate-bounce'
+                      : 'bg-slate-400'
+                  }`}
+                />
+                <span className="hidden sm:inline">
+                  {syncStatus === 'connected'
+                    ? 'Live Sync'
+                    : syncStatus === 'syncing'
+                    ? 'Syncing'
+                    : 'Local Cache'}
+                </span>
+              </div>
+
+              <div
+                className={`flex items-center gap-1 px-2.5 py-1.5 rounded-xl border shrink-0 ${
+                  isDark ? 'bg-slate-800 border-slate-700' : 'bg-slate-100/90 border-slate-200/90'
+                }`}
+              >
               <CalendarCheck className="w-3.5 h-3.5 text-indigo-500 shrink-0 hidden sm:inline" />
               <select
                 value={activeCycleMonth.month}
@@ -1619,7 +1783,8 @@ export default function App() {
               </div>
             </div>
           </div>
-        </header>
+        </div>
+      </header>
 
         {/* =========================================================
             MAIN CONTENT CONTAINER
