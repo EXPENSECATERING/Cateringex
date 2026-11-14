@@ -115,7 +115,19 @@ const getDynamicYears = (centerYearStr) => {
 };
 
 // --- MEMOIZED MOBILE-SAFE INLINE CLICKABLE DATE PICKER ---
-const ClickableDateInput = memo(function ClickableDateInput({ value, onChange, label, isDark }) {
+interface ClickableDateInputProps {
+  value: string;
+  onChange: (val: any) => void;
+  label?: string;
+  isDark?: boolean;
+}
+
+const ClickableDateInput = memo(function ClickableDateInput({
+  value,
+  onChange,
+  label,
+  isDark
+}: ClickableDateInputProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const initialDate = useMemo(() => {
@@ -1177,7 +1189,7 @@ export default function App() {
     if (!file) return;
     const reader = new FileReader();
     reader.onload = (evt) => {
-      setPasteData(evt.target?.result || '');
+      setPasteData((evt.target?.result as string) || '');
       triggerToast('CSV loaded! Click "Import Rows" below.');
     };
     reader.readAsText(file);
